@@ -204,18 +204,20 @@ class Quoridor:
         else:
             # si horizontal
             if coups_adver[0][0]-coups_adver[1][0] == 0:
-                for i in graphe.successors(coups_adver[0]):
+                for i in coups_adver:
                     if (i not in self.liste_murs["horizontaux"] and
                             (i[0]-1, i[1]) not in self.liste_murs["horizontaux"] and
+                            (i[0]+1, i[1]) not in self.liste_murs["horizontaux"] and
                             (i[0] + 1, i[1] - 1) not in self.liste_murs["verticaux"]):
                         self.placer_mur(joueur, tuple(i), 'horizontal')
                         break
 
             # si vertical ou autre
             else:
-                for i in graphe.successors(coups_adver[0]):
+                for i in coups_adver:
                     if (i not in self.liste_murs["verticaux"] and
                             [i[0], i[1]-1] not in self.liste_murs["verticaux"] and
+                            [i[0], i[1]+1] not in self.liste_murs["verticaux"] and
                             (i[0] - 1, i[1] + 1) not in self.liste_murs["horizontaux"]):
                         self.placer_mur(joueur, tuple(i), 'vertical')
                         break

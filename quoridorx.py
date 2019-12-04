@@ -3,10 +3,13 @@ import quoridor
 
 
 class QuoridorX(quoridor.Quoridor):
+    
 
-    def __init__(self):
-        super().__init__()
-
+    def __init__(self, joueur, murs=None):
+        self.jeu = quoridor.Quoridor(joueur, murs)
+        self.turtle_j1 = turtle.Turtle()
+        self.turtle_j2 = turtle.Turtle()
+        
     def afficher(self):
         fen = turtle.Screen()
         fen.title("Quoridor")
@@ -26,33 +29,42 @@ class QuoridorX(quoridor.Quoridor):
         for i in pointTab:
             tab.goto(i)
 
-
         mur= turtle.Turtle()
         mur.speed(0)
+        mur.hideturtle()
         fen.addshape('murV',((-45,5),(45,5),(45,-5),(-45,-5)))
-        murvertical=[[6, 2], [4, 4], [2, 6], [7, 5], [7, 7]]
         mur.shape('murV')
         mur.penup()
-        for i in murvertical:
+        for i in self.jeu.liste_murs['verticaux']:
             mur.goto(-200+50*(i[0]-1),-200+50*i[1])
             mur.stamp()
 
         fen.addshape('murH',((5,-45),(5,45),(-5,45),(-5,-45)))
-        murhorizontal=[[4, 4], [2, 6], [3, 8], [5, 8], [7, 8]]
         mur.shape('murH')
-        for i in murhorizontal:
+        for i in self.jeu.liste_murs['horizontaux']:
             mur.goto(-200+50*i[0],-200+50*(i[1]-1))
             mur.stamp()
 
-        posjoueur1=(5,5)
-        posjoueur2=(8,6)
-        j=turtle.Turtle()
-        j.speed(0)
-        j.penup()
-        j.shape('circle')
-        j.goto((-175+50*(posjoueur1[0]-1),-175+50*(posjoueur1[1]-1)))
-        j.stamp()
-        j.color('red')
-        j.goto((-175+50*(posjoueur2[0]-1),-175+50*(posjoueur2[1]-1)))
-        j.stamp()
-        fen.exitonclick()
+        self.turtle_j1.hideturtle()
+        self.turtle_j1.clearstamps()
+        self.turtle_j1.speed(0)
+        self.turtle_j1.penup()
+        self.turtle_j1.shape('circle')
+        self.turtle_j1.goto((-175+50*(self.jeu.liste_joueurs[0]['pos'][0]-1),-175+50*(self.jeu.liste_joueurs[0]['pos'][1]-1)))
+        self.turtle_j1.stamp()
+
+        self.turtle_j2.hideturtle()
+        self.turtle_j2.clearstamps()
+        self.turtle_j2.color('red')
+        self.turtle_j2.speed(0)
+        self.turtle_j2.penup()
+        self.turtle_j2.shape('circle')
+        self.turtle_j2.goto((-175+50*(self.jeu.liste_joueurs[1]['pos'][0]-1),-175+50*(self.jeu.liste_joueurs[1]['pos'][1]-1)))
+        self.turtle_j2.stamp()
+
+jeu= QuoridorX(('j1','j2'))
+while True:
+    jeu.afficher()
+    jeu.jeu.jouer_coup(2)
+    jeu.afficher()
+    jeu.jeu.jouer_coup(1)
