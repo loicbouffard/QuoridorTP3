@@ -83,11 +83,11 @@ class Quoridor:
     '''Classe du jeu Quoridor'''
 
     def __init__(self, joueurs, murs=None):
-        if murs is not None and murs is not dict:
+        if murs is not None and not isinstance(murs, dict):
             raise QuoridorError(
                 "murs n'est pas un dictionnaire lorsque présent.")
         elif murs is not None:
-            for i in murs['horizonraux']:
+            for i in murs['horizontaux']:
                 if i[0] < 1 or i[0] > 9 or i[1] < 1 or i[1] > 9:
                     raise QuoridorError("la position d'un mur est invalide.")
             for i in murs['verticaux']:
@@ -310,3 +310,11 @@ def isiterable(p_object):
         return True
     except TypeError:
         return False
+
+
+if __name__ == "__main__":
+    jeu = Quoridor(['nvir', 'jnfein'])
+    while True:
+        jeu.jouer_coup(1)
+        jeu.jouer_coup(2)
+        print(jeu)
