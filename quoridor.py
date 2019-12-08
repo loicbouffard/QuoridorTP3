@@ -199,7 +199,8 @@ class Quoridor:
 
         if self.partie_terminée() is not False:
             raise QuoridorError("la partie est déjà terminée.")
-
+        CHOIX_COUP = ''
+        POSITION = (0, 0)
         graphe = construire_graphe([joueur['pos'] for joueur in self.liste_joueurs],
                                    self.liste_murs['horizontaux'], self.liste_murs['verticaux'])
         coups = nx.shortest_path(
@@ -209,27 +210,35 @@ class Quoridor:
 
         if len(coups) <= len(coups_adver) or self.liste_joueurs[joueur-1]['murs'] < 1:
             self.déplacer_jeton(joueur, coups[1])
+            CHOIX_COUP = 'D'
+            POSITION = coups[1]
 
         else:
             # si horizontal
             if coups_adver[0][0]-coups_adver[1][0] == 0:
+                CHOIX_COUP = 'MH'
                 for i in coups_adver:
                     if (i not in self.liste_murs["horizontaux"] and
                             (i[0]-1, i[1]) not in self.liste_murs["horizontaux"] and
                             (i[0]+1, i[1]) not in self.liste_murs["horizontaux"] and
                             (i[0] + 1, i[1] - 1) not in self.liste_murs["verticaux"]):
                         self.placer_mur(joueur, tuple(i), 'horizontal')
+                        POSITION = tuple(i)
                         break
 
             # si vertical ou autre
             else:
+                CHOIX_COUP = 'MV'
                 for i in coups_adver:
                     if (i not in self.liste_murs["verticaux"] and
                             [i[0], i[1]-1] not in self.liste_murs["verticaux"] and
                             [i[0], i[1]+1] not in self.liste_murs["verticaux"] and
                             (i[0] - 1, i[1] + 1) not in self.liste_murs["horizontaux"]):
                         self.placer_mur(joueur, tuple(i), 'vertical')
+                        POSITION = tuple(i)
                         break
+
+        return (CHOIX_COUP, str(POSITION))
 
     def état_partie(self):
         """Permet de retourner l'état de la partie sous la forme d'un dictionnaire"""
@@ -314,7 +323,8 @@ def isiterable(p_object):
 
 if __name__ == "__main__":
     jeu = Quoridor(['nvir', 'jnfein'])
+    print(jeu)
     while True:
-        jeu.jouer_coup(1)
-        jeu.jouer_coup(2)
+        print(jeu.jouer_coup(1))
+        print(jeu.jouer_coup(2))
         print(jeu)

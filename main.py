@@ -37,34 +37,18 @@ if __name__ == "__main__":
         ID_PARTIE = DEBUTER[0]
 
         print(JEU)
-        CHOIX_COUP = ''
-        POS = ''
+
         GAGNANT = True
         while GAGNANT:
-            POS_PRECEDENTE = JEU.état_partie()['joueurs'][0]['pos']
-            NBR_MURSH = len(JEU.état_partie()['murs']['horizontaux'])
-            NBR_MURSV = len(JEU.état_partie()['murs']['verticaux'])
 
             try:
-                JEU.jouer_coup(1)
-                # Détection du coup joué automatique et de la position
-                if POS_PRECEDENTE != JEU.état_partie()['joueurs'][0]['pos']:
-                    CHOIX_COUP = 'D'
-                    POS = str(JEU.état_partie()['joueurs'][0]['pos'])
-                elif NBR_MURSH != len(JEU.état_partie()['murs']['horizontaux']):
-                    CHOIX_COUP = 'MH'
-                    POS = str(JEU.état_partie()['murs']['horizontaux'][-1])
-                elif NBR_MURSV != len(JEU.état_partie()['murs']['verticaux']):
-                    CHOIX_COUP = 'MV'
-                    POS = str(JEU.état_partie()['murs']['verticaux'][-1])
+                COUP = JEU.jouer_coup(1)
 
-                JOUER = api.jouer_coup(ID_PARTIE, CHOIX_COUP, POS)
+                JOUER = api.jouer_coup(ID_PARTIE, COUP[0], COUP[1])
 
-                OK_CHOIX = False
                 JEU = quoridor.Quoridor(JOUER['joueurs'], JOUER['murs'])
                 print(JEU)
             except StopIteration as err:
-                OK_CHOIX = False
                 GAGNANT = False
                 print(f'Le gagnant est: {err}')
             except RuntimeError as err:
@@ -103,7 +87,21 @@ if __name__ == "__main__":
 
         JEU.afficher()
 
-        print('À implenter')
+        GAGNANT = True
+        while GAGNANT:
+
+            try:
+                COUP = JEU.jouer_coup(1)
+
+                JOUER = api.jouer_coup(ID_PARTIE, COUP[0], COUP[1])
+
+                JEU = quoridorx.QuoridorX(JOUER['joueurs'], JOUER['murs'])
+                JEU.afficher()
+            except StopIteration as err:
+                GAGNANT = False
+                print(f'Le gagnant est: {err}')
+            except RuntimeError as err:
+                print(err)
     # Mode manuel contre le serveur (commande : python main.py idul)
     else:
         DEBUTER = api.débuter_partie(COMMANDE.idul)
