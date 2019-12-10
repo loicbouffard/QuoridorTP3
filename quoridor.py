@@ -181,12 +181,12 @@ class Quoridor:
             raise QuoridorError(
                 "la position est invalide (en dehors du damier).")
 
-        graphe = construire_graphe([joueur['pos'] for joueur in self.liste_joueurs],
+        graphe = construire_graphe(tuple([joueur['pos'] for joueur in self.liste_joueurs]),
                                    self.liste_murs['horizontaux'], self.liste_murs['verticaux'])
 
         # vérifie position valide
-        if position in graphe.successors(self.liste_joueurs[joueur-1]['pos']):
-            self.liste_joueurs[joueur-1]['pos'] = position
+        if tuple(position) in graphe.successors(tuple(self.liste_joueurs[joueur-1]['pos'])):
+            self.liste_joueurs[joueur-1]['pos'] = tuple(position)
 
         else:
             raise QuoridorError(
@@ -204,9 +204,9 @@ class Quoridor:
         graphe = construire_graphe([joueur['pos'] for joueur in self.liste_joueurs],
                                    self.liste_murs['horizontaux'], self.liste_murs['verticaux'])
         coups = nx.shortest_path(
-            graphe, self.liste_joueurs[joueur - 1]['pos'], 'B' + str(joueur))
+            graphe, tuple(self.liste_joueurs[joueur - 1]['pos']), 'B' + str(joueur))
         coups_adver = nx.shortest_path(
-            graphe, self.liste_joueurs[2 - joueur]['pos'], 'B' + str(3 - joueur))
+            graphe, tuple(self.liste_joueurs[2 - joueur]['pos']), 'B' + str(3 - joueur))
 
         if len(coups) <= len(coups_adver) or self.liste_joueurs[joueur-1]['murs'] < 1:
             self.déplacer_jeton(joueur, coups[1])

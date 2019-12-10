@@ -14,14 +14,12 @@ def analyser_commande():
     parser.add_argument("-l", '--lister', action='store_true',
                         help="Lister les identifiants de vos 20 dernières parties.")
     # -a
-    parser.add_argument("-a", action='store_true',
-                        help="Jouer en mode automatique contre le serveur.")
+    parser.add_argument("-a", '--automatique', action='store_true',
+                        help="Activer le mode automatique.")
     # -x
-    parser.add_argument("-x", action='store_true',
-                        help="Jouer en mode manuel contre le serveur avec affichage graphique.")
-    # -ax
-    parser.add_argument("-ax", action='store_true',
-                        help="Jouer en mode automatique contre le serveur avec un affichage graphique.")
+    parser.add_argument("-x", '--graphique', action='store_true',
+                        help="Activer le mode graphique.")
+
     return parser.parse_args()
 
 
@@ -30,8 +28,33 @@ if __name__ == "__main__":
 
     if COMMANDE.lister:
         print(api.lister_parties(COMMANDE.idul))
+
+    # Mode automatique avec graphique (commande : python main.py -ax idul)
+    elif COMMANDE.automatique and COMMANDE.graphique:
+        DEBUTER = api.débuter_partie(COMMANDE.idul)
+        JEU = quoridorx.QuoridorX(DEBUTER[1]['joueurs'], DEBUTER[1]['murs'])
+        ID_PARTIE = DEBUTER[0]
+
+        JEU.afficher()
+
+        GAGNANT = True
+        while GAGNANT:
+
+            try:
+                COUP = JEU.jouer_coup(1)
+
+                JOUER = api.jouer_coup(ID_PARTIE, COUP[0], COUP[1])
+
+                JEU = quoridorx.QuoridorX(JOUER['joueurs'], JOUER['murs'])
+                JEU.afficher()
+            except StopIteration as err:
+                GAGNANT = False
+                print(f'Le gagnant est: {err}')
+            except RuntimeError as err:
+                print(err)
+
     # Mode automatique (commande : python main.py -a idul)
-    elif COMMANDE.a:
+    elif COMMANDE.automatique:
         DEBUTER = api.débuter_partie(COMMANDE.idul)
         JEU = quoridor.Quoridor(DEBUTER[1]['joueurs'], DEBUTER[1]['murs'])
         ID_PARTIE = DEBUTER[0]
@@ -54,7 +77,7 @@ if __name__ == "__main__":
             except RuntimeError as err:
                 print(err)
     # Mode manuel avec graphique (commande : python main.py -x idul)
-    elif COMMANDE.x:
+    elif COMMANDE.graphique:
         DEBUTER = api.débuter_partie(COMMANDE.idul)
         JEU = quoridorx.QuoridorX(DEBUTER[1]['joueurs'], DEBUTER[1]['murs'])
         ID_PARTIE = DEBUTER[0]
@@ -70,7 +93,9 @@ if __name__ == "__main__":
 
                 try:
                     JOUER = api.jouer_coup(ID_PARTIE, CHOIX_COUP, POS)
+
                     OK_CHOIX = False
+
                     JEU = quoridorx.QuoridorX(JOUER['joueurs'], JOUER['murs'])
                     JEU.afficher()
                 except StopIteration as err:
@@ -79,29 +104,7 @@ if __name__ == "__main__":
                     print(f'Le gagnant est: {err}')
                 except RuntimeError as err:
                     print(err)
-    # Mode automatique avec graphqiue (commande : python main.py -ax idul)
-    elif COMMANDE.ax:
-        DEBUTER = api.débuter_partie(COMMANDE.idul)
-        JEU = quoridorx.QuoridorX(DEBUTER[1]['joueurs'], DEBUTER[1]['murs'])
-        ID_PARTIE = DEBUTER[0]
 
-        JEU.afficher()
-
-        GAGNANT = True
-        while GAGNANT:
-
-            try:
-                COUP = JEU.jouer_coup(1)
-
-                JOUER = api.jouer_coup(ID_PARTIE, COUP[0], COUP[1])
-
-                JEU = quoridorx.QuoridorX(JOUER['joueurs'], JOUER['murs'])
-                JEU.afficher()
-            except StopIteration as err:
-                GAGNANT = False
-                print(f'Le gagnant est: {err}')
-            except RuntimeError as err:
-                print(err)
     # Mode manuel contre le serveur (commande : python main.py idul)
     else:
         DEBUTER = api.débuter_partie(COMMANDE.idul)
@@ -119,7 +122,9 @@ if __name__ == "__main__":
 
                 try:
                     JOUER = api.jouer_coup(ID_PARTIE, CHOIX_COUP, POS)
+
                     OK_CHOIX = False
+
                     JEU = quoridor.Quoridor(JOUER['joueurs'], JOUER['murs'])
                     print(JEU)
                 except StopIteration as err:
