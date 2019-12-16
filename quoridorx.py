@@ -60,7 +60,8 @@ class QuoridorX(quoridor.Quoridor):
         self.turtle_j1.penup()
         self.turtle_j1.shape('circle')
         self.turtle_j1.goto(
-            (-175+50*(self.liste_joueurs[0]['pos'][0]-1), -175+50*(self.liste_joueurs[0]['pos'][1]-1)))
+            (-175+50*(self.liste_joueurs[0]['pos'][0]-1),
+             -175+50*(self.liste_joueurs[0]['pos'][1]-1)))
         self.turtle_j1.stamp()
 
         self.turtle_j2.hideturtle()
@@ -70,5 +71,6 @@ class QuoridorX(quoridor.Quoridor):
         self.turtle_j2.penup()
         self.turtle_j2.shape('circle')
         self.turtle_j2.goto(
-            (-175+50*(self.liste_joueurs[1]['pos'][0]-1), -175+50*(self.liste_joueurs[1]['pos'][1]-1)))
+            (-175+50*(self.liste_joueurs[1]['pos'][0]-1),
+             -175+50*(self.liste_joueurs[1]['pos'][1]-1)))
         self.turtle_j2.stamp()
