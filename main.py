@@ -39,13 +39,13 @@ if __name__ == "__main__":
 
         GAGNANT = True
         while GAGNANT:
-
             try:
                 COUP = JEU.jouer_coup(1)
 
                 JOUER = api.jouer_coup(ID_PARTIE, COUP[0], COUP[1])
-                JEU.liste_joueurs=JOUER['joueurs']
-                JEU.liste_murs=JOUER['murs']
+                JEU.liste_joueurs = JOUER['joueurs']
+                JEU.liste_murs = JOUER['murs']
+
                 JEU.afficher()
             except StopIteration as err:
                 GAGNANT = False
@@ -63,14 +63,14 @@ if __name__ == "__main__":
 
         GAGNANT = True
         while GAGNANT:
-
             try:
                 COUP = JEU.jouer_coup(1)
 
                 JOUER = api.jouer_coup(ID_PARTIE, COUP[0], COUP[1])
 
-                JEU.liste_joueurs=JOUER['joueurs']
-                JEU.liste_murs=JOUER['murs']
+                JEU.liste_joueurs = JOUER['joueurs']
+                JEU.liste_murs = JOUER['murs']
+
                 print(JEU)
             except StopIteration as err:
                 GAGNANT = False
@@ -97,8 +97,8 @@ if __name__ == "__main__":
 
                     OK_CHOIX = False
 
-                    JEU.liste_joueurs=JOUER['joueurs']
-                    JEU.liste_murs=JOUER['murs']
+                    JEU.liste_joueurs = JOUER['joueurs']
+                    JEU.liste_murs = JOUER['murs']
                     JEU.afficher()
                 except StopIteration as err:
                     OK_CHOIX = False
@@ -126,9 +126,9 @@ if __name__ == "__main__":
                     JOUER = api.jouer_coup(ID_PARTIE, CHOIX_COUP, POS)
 
                     OK_CHOIX = False
-                    JEU.liste_joueurs=JOUER['joueurs']
-                    JEU.liste_murs=JOUER['murs']
-                    #JEU = quoridor.Quoridor(JOUER['joueurs'], JOUER['murs'])
+                    JEU.liste_joueurs = JOUER['joueurs']
+                    JEU.liste_murs = JOUER['murs']
+
                     print(JEU)
                 except StopIteration as err:
                     OK_CHOIX = False

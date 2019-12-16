@@ -218,12 +218,12 @@ class Quoridor:
             if coups_adver[0][0]-coups_adver[1][0] == 0:
                 CHOIX_COUP = 'MH'
                 for i in coups_adver:
-                    #traiter position
+                    # traiter position
                     if (i not in self.liste_murs["horizontaux"] and
-                            (i[0]-1, i[1]) not in self.liste_murs["horizontaux"] and
-                            (i[0]+1, i[1]) not in self.liste_murs["horizontaux"] and
-                            (i[0] + 1, i[1] - 1) not in self.liste_murs["verticaux"] and
-                            i[0] >= 1 and i[0] <=8 and i[1] >= 2 and i[1] <= 9):
+                            ([i[0]-1, i[1]]) not in self.liste_murs["horizontaux"] and
+                            ([i[0]+1, i[1]]) not in self.liste_murs["horizontaux"] and
+                            ([i[0] + 1, i[1] - 1]) not in self.liste_murs["verticaux"] and
+                            i[0] >= 1 and i[0] <= 8 and i[1] >= 2 and i[1] <= 9):
                         self.placer_mur(joueur, tuple(i), 'horizontal')
                         POSITION = tuple(i)
                         break
@@ -233,9 +233,9 @@ class Quoridor:
                 CHOIX_COUP = 'MV'
                 for i in coups_adver:
                     if (i not in self.liste_murs["verticaux"] and
-                            [i[0], i[1]-1] not in self.liste_murs["verticaux"] and
-                            [i[0], i[1]+1] not in self.liste_murs["verticaux"] and
-                            (i[0] - 1, i[1] + 1) not in self.liste_murs["horizontaux"] and
+                            ([i[0], i[1]-1]) not in self.liste_murs["verticaux"] and
+                            ([i[0], i[1]+1]) not in self.liste_murs["verticaux"] and
+                            ([i[0] - 1, i[1] + 1]) not in self.liste_murs["horizontaux"] and
                             i[0] >= 2 and i[0] <= 9 and i[1] >= 1 and i[1] <= 8):
                         self.placer_mur(joueur, tuple(i), 'vertical')
                         POSITION = tuple(i)
@@ -245,7 +245,6 @@ class Quoridor:
 
     def état_partie(self):
         """Permet de retourner l'état de la partie sous la forme d'un dictionnaire"""
-        # murs a tirer de la methode placer_mur
         état = {'joueurs': [
             {'nom': self.liste_joueurs[0]['nom'], 'murs': self.liste_joueurs[0]['murs'],
              'pos': self.liste_joueurs[0]['pos']},
@@ -275,7 +274,7 @@ class Quoridor:
                     raise QuoridorError(
                         'la position est invalide pour cette orientation.')
                 for mur in self.liste_murs['horizontaux']:
-                    if position == mur or (position[0] == (mur[0]+1) and position[1] == mur[1]):
+                    if position == tuple(mur) or (position[0] == (mur[0]+1) and position[1] == mur[1]):
                         raise QuoridorError(
                             'un mur occupe déjà cette position.')
 
@@ -285,14 +284,14 @@ class Quoridor:
                         raise QuoridorError(
                             'un mur occupe déjà cette position.')
                 # on ajoute le tuple position au murs horizontaux
-                self.liste_murs['horizontaux'].append(position)
+                self.liste_murs['horizontaux'].append(tuple(position))
                 self.liste_joueurs[joueur-1]['murs'] -= 1
             if orientation == 'vertical':
                 if position[0] > 9 or position[0] < 2 or position[1] < 1 or position[1] > 8:
                     raise QuoridorError(
                         'la position est invalide pour cette orientation.')
                 for mur in self.liste_murs['verticaux']:
-                    if position == mur or (position[1] == (mur[1]+1) and position[0] == mur[0]):
+                    if position == tuple(mur) or (position[1] == (mur[1]+1) and position[0] == mur[0]):
                         raise QuoridorError(
                             'un mur occupe déjà cette position.')
 
@@ -302,7 +301,7 @@ class Quoridor:
                         raise QuoridorError(
                             'un mur occupe déjà cette position.')
                 # on ajoute le tuple position au murs verticaux
-                self.liste_murs['verticaux'].append(position)
+                self.liste_murs['verticaux'].append(tuple(position))
                 self.liste_joueurs[joueur-1]['murs'] -= 1
         else:
             raise QuoridorError('Le joueur a déjà placé tous ses murs.')
