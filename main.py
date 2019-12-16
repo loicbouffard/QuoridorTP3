@@ -44,8 +44,8 @@ if __name__ == "__main__":
                 COUP = JEU.jouer_coup(1)
 
                 JOUER = api.jouer_coup(ID_PARTIE, COUP[0], COUP[1])
-
-                JEU = quoridorx.QuoridorX(JOUER['joueurs'], JOUER['murs'])
+                JEU.liste_joueurs=JOUER['joueurs']
+                JEU.liste_murs=JOUER['murs']
                 JEU.afficher()
             except StopIteration as err:
                 GAGNANT = False
@@ -69,7 +69,8 @@ if __name__ == "__main__":
 
                 JOUER = api.jouer_coup(ID_PARTIE, COUP[0], COUP[1])
 
-                JEU = quoridor.Quoridor(JOUER['joueurs'], JOUER['murs'])
+                JEU.liste_joueurs=JOUER['joueurs']
+                JEU.liste_murs=JOUER['murs']
                 print(JEU)
             except StopIteration as err:
                 GAGNANT = False
@@ -96,7 +97,8 @@ if __name__ == "__main__":
 
                     OK_CHOIX = False
 
-                    JEU = quoridorx.QuoridorX(JOUER['joueurs'], JOUER['murs'])
+                    JEU.liste_joueurs=JOUER['joueurs']
+                    JEU.liste_murs=JOUER['murs']
                     JEU.afficher()
                 except StopIteration as err:
                     OK_CHOIX = False
@@ -124,8 +126,9 @@ if __name__ == "__main__":
                     JOUER = api.jouer_coup(ID_PARTIE, CHOIX_COUP, POS)
 
                     OK_CHOIX = False
-
-                    JEU = quoridor.Quoridor(JOUER['joueurs'], JOUER['murs'])
+                    JEU.liste_joueurs=JOUER['joueurs']
+                    JEU.liste_murs=JOUER['murs']
+                    #JEU = quoridor.Quoridor(JOUER['joueurs'], JOUER['murs'])
                     print(JEU)
                 except StopIteration as err:
                     OK_CHOIX = False

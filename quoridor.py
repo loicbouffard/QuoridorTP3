@@ -218,10 +218,12 @@ class Quoridor:
             if coups_adver[0][0]-coups_adver[1][0] == 0:
                 CHOIX_COUP = 'MH'
                 for i in coups_adver:
+                    #traiter position
                     if (i not in self.liste_murs["horizontaux"] and
                             (i[0]-1, i[1]) not in self.liste_murs["horizontaux"] and
                             (i[0]+1, i[1]) not in self.liste_murs["horizontaux"] and
-                            (i[0] + 1, i[1] - 1) not in self.liste_murs["verticaux"]):
+                            (i[0] + 1, i[1] - 1) not in self.liste_murs["verticaux"] and
+                            i[0] >= 1 and i[0] <=8 and i[1] >= 2 and i[1] <= 9):
                         self.placer_mur(joueur, tuple(i), 'horizontal')
                         POSITION = tuple(i)
                         break
@@ -233,7 +235,8 @@ class Quoridor:
                     if (i not in self.liste_murs["verticaux"] and
                             [i[0], i[1]-1] not in self.liste_murs["verticaux"] and
                             [i[0], i[1]+1] not in self.liste_murs["verticaux"] and
-                            (i[0] - 1, i[1] + 1) not in self.liste_murs["horizontaux"]):
+                            (i[0] - 1, i[1] + 1) not in self.liste_murs["horizontaux"] and
+                            i[0] >= 2 and i[0] <= 9 and i[1] >= 1 and i[1] <= 8):
                         self.placer_mur(joueur, tuple(i), 'vertical')
                         POSITION = tuple(i)
                         break
