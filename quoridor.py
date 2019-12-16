@@ -86,7 +86,7 @@ class Quoridor:
         if murs is not None and not isinstance(murs, dict):
             raise QuoridorError(
                 "murs n'est pas un dictionnaire lorsque présent.")
-        elif murs is not None:
+        if murs is not None:
             for i in murs['horizontaux']:
                 if i[0] < 1 or i[0] > 9 or i[1] < 1 or i[1] > 9:
                     raise QuoridorError("la position d'un mur est invalide.")
@@ -199,8 +199,8 @@ class Quoridor:
 
         if self.partie_terminée() is not False:
             raise QuoridorError("la partie est déjà terminée.")
-        CHOIX_COUP = ''
-        POSITION = (0, 0)
+        choix_coup = ''
+        position = (0, 0)
         graphe = construire_graphe([joueur['pos'] for joueur in self.liste_joueurs],
                                    self.liste_murs['horizontaux'], self.liste_murs['verticaux'])
         coups = nx.shortest_path(
@@ -210,38 +210,38 @@ class Quoridor:
 
         if len(coups) <= len(coups_adver) or self.liste_joueurs[joueur-1]['murs'] < 1:
             self.déplacer_jeton(joueur, coups[1])
-            CHOIX_COUP = 'D'
-            POSITION = coups[1]
+            choix_coup = 'D'
+            position = coups[1]
 
         else:
             # si horizontal
             if coups_adver[0][0]-coups_adver[1][0] == 0:
-                CHOIX_COUP = 'MH'
+                choix_coup = 'MH'
                 for i in coups_adver:
                     # traiter position
                     if (i not in self.liste_murs["horizontaux"] and
-                            ([i[0]-1, i[1]]) not in self.liste_murs["horizontaux"] and
-                            ([i[0]+1, i[1]]) not in self.liste_murs["horizontaux"] and
-                            ([i[0] + 1, i[1] - 1]) not in self.liste_murs["verticaux"] and
+                            (i[0]-1, i[1]) not in self.liste_murs["horizontaux"] and
+                            (i[0]+1, i[1]) not in self.liste_murs["horizontaux"] and
+                            (i[0] + 1, i[1] - 1) not in self.liste_murs["verticaux"] and
                             i[0] >= 1 and i[0] <= 8 and i[1] >= 2 and i[1] <= 9):
                         self.placer_mur(joueur, tuple(i), 'horizontal')
-                        POSITION = tuple(i)
+                        position = tuple(i)
                         break
 
             # si vertical ou autre
             else:
-                CHOIX_COUP = 'MV'
+                choix_coup = 'MV'
                 for i in coups_adver:
                     if (i not in self.liste_murs["verticaux"] and
-                            ([i[0], i[1]-1]) not in self.liste_murs["verticaux"] and
-                            ([i[0], i[1]+1]) not in self.liste_murs["verticaux"] and
-                            ([i[0] - 1, i[1] + 1]) not in self.liste_murs["horizontaux"] and
+                            (i[0], i[1]-1) not in self.liste_murs["verticaux"] and
+                            (i[0], i[1]+1) not in self.liste_murs["verticaux"] and
+                            (i[0] - 1, i[1] + 1) not in self.liste_murs["horizontaux"] and
                             i[0] >= 2 and i[0] <= 9 and i[1] >= 1 and i[1] <= 8):
                         self.placer_mur(joueur, tuple(i), 'vertical')
-                        POSITION = tuple(i)
+                        position = tuple(i)
                         break
 
-        return (CHOIX_COUP, str(POSITION))
+        return (choix_coup, str(position))
 
     def état_partie(self):
         """Permet de retourner l'état de la partie sous la forme d'un dictionnaire"""
@@ -274,7 +274,8 @@ class Quoridor:
                     raise QuoridorError(
                         'la position est invalide pour cette orientation.')
                 for mur in self.liste_murs['horizontaux']:
-                    if position == tuple(mur) or (position[0] == (mur[0]+1) and position[1] == mur[1]):
+                    if (position == tuple(mur) or (position[0] == (mur[0]+1)
+                                                   and position[1] == mur[1])):
                         raise QuoridorError(
                             'un mur occupe déjà cette position.')
 
@@ -291,7 +292,8 @@ class Quoridor:
                     raise QuoridorError(
                         'la position est invalide pour cette orientation.')
                 for mur in self.liste_murs['verticaux']:
-                    if position == tuple(mur) or (position[1] == (mur[1]+1) and position[0] == mur[0]):
+                    if (position == tuple(mur) or (position[1] == (mur[1]+1)
+                                                   and position[0] == mur[0])):
                         raise QuoridorError(
                             'un mur occupe déjà cette position.')
 
@@ -321,12 +323,3 @@ def isiterable(p_object):
         return True
     except TypeError:
         return False
-
-
-if __name__ == "__main__":
-    jeu = Quoridor(['nvir', 'jnfein'])
-    print(jeu)
-    while True:
-        print(jeu.jouer_coup(1))
-        print(jeu.jouer_coup(2))
-        print(jeu)

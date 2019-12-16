@@ -1,8 +1,10 @@
+'''Module de la classe du jeu QuoridorX'''
 import turtle
 import quoridor
 
 
 class QuoridorX(quoridor.Quoridor):
+    '''Constructeur d'un jeu Quoridor graphique'''
 
     def __init__(self, joueur, murs=None):
         super().__init__(joueur, murs)
@@ -10,25 +12,30 @@ class QuoridorX(quoridor.Quoridor):
         self.turtle_j2 = turtle.Turtle()
 
     def afficher(self):
+        '''Affiche le jeu Quoridor graphique'''
+
         fen = turtle.Screen()
         fen.title("Quoridor")
         fen.setup(width=700, height=600)
-        pointTab = ((-200, 250), (250, 250), (250, -200), (-200, -200), (-200, 250), (-150, 250), (-150, -200),
-                    (-100, -200), (-100, 250), (-50, 250), (-50, -200), (0, -
-                                                                         200), (0, 250), (50, 250), (50, -200), (100, -200),
-                    (100, 250), (150, 250), (150, -200), (200, -200), (200,
-                                                                       250), (250, 250), (250, 200), (-200, 200), (-200, 150),
-                    (250, 150), (250, 100), (-200, 100), (-200, 50), (250,
-                                                                      50), (250, 0), (-200, 0), (-200, -50), (250, -50),
-                    (250, -100), (-200, -100), (-200, -150), (250, -150))
+        point_tab = ((-200, 250), (250, 250), (250, -200), (-200, -200), (-200, 250),
+                     (-150, 250), (-150, -200), (-100, -
+                                                 200), (-100, 250), (-50, 250),
+                     (-50, -200), (0, -200), (0, 250), (50,
+                                                        250), (50, -200), (100, -200),
+                     (100, 250), (150, 250), (150, -200), (200, -200), (200, 250),
+                     (250, 250), (250, 200), (-200,
+                                              200), (-200, 150), (250, 150), (250, 100),
+                     (-200, 100), (-200, 50), (250,
+                                               50), (250, 0), (-200, 0), (-200, -50),
+                     (250, -50), (250, -100), (-200, -100), (-200, -150), (250, -150))
 
         tab = turtle.Turtle()
         tab.hideturtle()
         tab.speed(0)
         tab.penup()
-        tab.goto(pointTab[0])
+        tab.goto(point_tab[0])
         tab.pendown()
-        for i in pointTab:
+        for i in point_tab:
             tab.goto(i)
 
         mur = turtle.Turtle()
@@ -65,12 +72,3 @@ class QuoridorX(quoridor.Quoridor):
         self.turtle_j2.goto(
             (-175+50*(self.liste_joueurs[1]['pos'][0]-1), -175+50*(self.liste_joueurs[1]['pos'][1]-1)))
         self.turtle_j2.stamp()
-
-
-if __name__ == "__main__":
-    jeu = QuoridorX(('j1', 'j2'))
-    while True:
-        jeu.afficher()
-        jeu.jouer_coup(2)
-        jeu.afficher()
-        jeu.jouer_coup(1)
